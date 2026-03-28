@@ -8,12 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #2563EB;
             --primary-dark: #1D4ED8;
@@ -27,577 +22,179 @@
             --text-secondary: #64748B;
             --border: #E2E8F0;
         }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        
         /* Header */
-        .header {
-            background: var(--primary);
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .header-icon {
-            width: 32px;
-            height: 32px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .last-update {
-            font-size: 0.875rem;
-            opacity: 0.9;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-        }
-
+        .header { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.5rem; font-weight: 600; display: flex; align-items: center; gap: 0.75rem; }
+        .header-icon { width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .header-right { display: flex; align-items: center; gap: 1.5rem; }
+        .last-update { font-size: 0.875rem; opacity: 0.9; }
+        .user-info { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; }
+        
         /* Navigation */
-        .nav {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            display: flex;
-            gap: 0;
-        }
-
-        .nav-item {
-            padding: 1rem 1.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .nav-item:hover {
-            color: var(--primary);
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
+        .nav { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; gap: 0; flex-wrap: wrap; }
+        .nav-item { padding: 1rem 1.5rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .nav-item:hover { color: var(--primary); }
+        .nav-item.active { color: var(--primary); border-bottom-color: var(--primary); }
+        
         /* Main Content */
-        .main {
-            padding: 1.5rem 2rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
+        .main { padding: 1.5rem 2rem; max-width: 1600px; margin: 0 auto; }
+        
         /* Alerts Banner */
-        .alerts-banner {
-            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-            border: 1px solid #F59E0B;
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .alerts-banner.critical {
-            background: linear-gradient(135deg, #FEE2E2, #FECACA);
-            border-color: #EF4444;
-        }
-
-        .alert-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--warning);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-        }
-
-        .alerts-banner.critical .alert-icon {
-            background: var(--danger);
-        }
-
-        .alert-content {
-            flex: 1;
-        }
-
-        .alert-title {
-            font-weight: 600;
-            color: #92400E;
-            margin-bottom: 0.25rem;
-        }
-
-        .alerts-banner.critical .alert-title {
-            color: #991B1B;
-        }
-
-        .alert-message {
-            font-size: 0.875rem;
-            color: #A16207;
-        }
-
-        .alerts-banner.critical .alert-message {
-            color: #B91C1C;
-        }
-
+        .alerts-banner { background: linear-gradient(135deg, #FEF3C7, #FDE68A); border: 1px solid #F59E0B; border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+        .alerts-banner.critical { background: linear-gradient(135deg, #FEE2E2, #FECACA); border-color: #EF4444; }
+        .alerts-banner.ok { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); border-color: #10B981; }
+        .alert-icon { width: 40px; height: 40px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; flex-shrink: 0; }
+        .alerts-banner.critical .alert-icon { background: var(--danger); }
+        .alerts-banner.ok .alert-icon { background: var(--success); }
+        .alert-content { flex: 1; }
+        .alert-title { font-weight: 600; color: #92400E; margin-bottom: 0.25rem; }
+        .alerts-banner.critical .alert-title { color: #991B1B; }
+        .alerts-banner.ok .alert-title { color: #065F46; }
+        .alert-message { font-size: 0.875rem; color: #A16207; }
+        .alerts-banner.critical .alert-message { color: #B91C1C; }
+        .alerts-banner.ok .alert-message { color: #047857; }
+        
         /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        @media (max-width: 1200px) {
-            .cards-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            border: 1px solid var(--border);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-
+        .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+        @media (max-width: 1200px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .cards-grid { grid-template-columns: 1fr; } }
+        
+        .card { background: var(--card); border-radius: 16px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .card-title { font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
         .card-icon.blue { background: #DBEAFE; color: var(--primary); }
         .card-icon.green { background: #D1FAE5; color: var(--success); }
         .card-icon.amber { background: #FEF3C7; color: var(--warning); }
         .card-icon.red { background: #FEE2E2; color: var(--danger); }
-
-        .card-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-meta {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .card-trend {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
-        }
-
+        .card-value { font-size: 2.5rem; font-weight: 700; line-height: 1; margin-bottom: 0.5rem; }
+        .card-meta { font-size: 0.875rem; color: var(--text-secondary); }
+        .card-trend { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.5rem; border-radius: 9999px; margin-left: 0.5rem; }
         .card-trend.up { background: #D1FAE5; color: #065F46; }
         .card-trend.down { background: #FEE2E2; color: #991B1B; }
-        .card-trend.neutral { background: #F3F4F6; color: #6B7280; }
-
+        
         /* Gauge */
-        .gauge-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .gauge {
-            width: 120px;
-            height: 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gauge-bg {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: conic-gradient(
-                var(--success) 0deg 108deg,
-                var(--warning) 108deg 162deg,
-                var(--danger) 162deg 180deg,
-                var(--border) 180deg 360deg
-            );
-            position: absolute;
-            top: 0;
-        }
-
-        .gauge-mask {
-            width: 80px;
-            height: 80px;
-            background: var(--card);
-            border-radius: 50%;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .gauge-needle {
-            width: 4px;
-            height: 50px;
-            background: var(--text);
-            position: absolute;
-            bottom: 0;
-            left: 58px;
-            transform-origin: bottom center;
-            border-radius: 2px;
-            transition: transform 0.5s ease-out;
-        }
-
-        .gauge-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 0.5rem;
-        }
-
-        /* Content Sections */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 1000px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .section-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
+        .gauge-container { display: flex; flex-direction: column; align-items: center; }
+        .gauge { width: 120px; height: 60px; position: relative; overflow: hidden; }
+        .gauge-bg { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--success) 0deg 108deg, var(--warning) 108deg 162deg, var(--danger) 162deg 180deg, var(--border) 180deg 360deg); position: absolute; top: 0; }
+        .gauge-mask { width: 80px; height: 80px; background: var(--card); border-radius: 50%; position: absolute; top: 20px; left: 20px; }
+        .gauge-needle { width: 4px; height: 50px; background: var(--text); position: absolute; bottom: 0; left: 58px; transform-origin: bottom center; border-radius: 2px; transition: transform 0.5s ease-out; }
+        .gauge-value { font-size: 1.5rem; font-weight: 700; margin-top: 0.5rem; }
+        
+        /* Content Grid */
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+        @media (max-width: 1000px) { .content-grid { grid-template-columns: 1fr; } }
+        .section-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        
         /* Sectors Table */
-        .sectors-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .sectors-table th {
-            text-align: left;
-            padding: 0.75rem 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .sectors-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.875rem;
-        }
-
-        .sectors-table tr:hover {
-            background: var(--bg);
-        }
-
-        .sector-name {
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .sector-icon {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .occupancy-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .occupancy-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
+        .sectors-table { width: 100%; border-collapse: collapse; }
+        .sectors-table th { text-align: left; padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); background: var(--bg); border-bottom: 1px solid var(--border); }
+        .sectors-table td { padding: 1rem; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+        .sectors-table tr:hover { background: var(--bg); }
+        .sector-name { font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+        .sector-icon { width: 8px; height: 8px; border-radius: 50%; }
+        .occupancy-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .occupancy-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
         .occupancy-fill.low { background: var(--success); }
         .occupancy-fill.medium { background: var(--warning); }
         .occupancy-fill.high { background: var(--danger); }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
+        .status-badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
         .status-badge.ok { background: #D1FAE5; color: #065F46; }
         .status-badge.warning { background: #FEF3C7; color: #92400E; }
         .status-badge.critical { background: #FEE2E2; color: #991B1B; }
-
+        
         /* Alerts List */
-        .alerts-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .alert-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg);
-            border-radius: 10px;
-            border-left: 4px solid;
-        }
-
+        .alerts-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .alert-item { display: flex; gap: 1rem; padding: 1rem; background: var(--bg); border-radius: 10px; border-left: 4px solid; }
         .alert-item.warning { border-left-color: var(--warning); }
         .alert-item.critical { border-left-color: var(--danger); }
         .alert-item.info { border-left-color: var(--primary); }
-
-        .alert-item-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.875rem;
-            flex-shrink: 0;
-        }
-
+        .alert-item-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; flex-shrink: 0; }
         .alert-item.warning .alert-item-icon { background: #FEF3C7; color: var(--warning); }
         .alert-item.critical .alert-item-icon { background: #FEE2E2; color: var(--danger); }
         .alert-item.info .alert-item-icon { background: #DBEAFE; color: var(--primary); }
-
-        .alert-item-content {
-            flex: 1;
-        }
-
-        .alert-item-title {
-            font-weight: 500;
-            font-size: 0.875rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .alert-item-meta {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* Charts placeholder */
-        .chart-placeholder {
-            height: 200px;
-            background: linear-gradient(180deg, var(--bg) 0%, var(--card) 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 1rem;
-        }
-
-        .chart-bar {
-            width: 40px;
-            background: var(--primary);
-            border-radius: 4px 4px 0 0;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-        }
-
-        .chart-bar:hover {
-            opacity: 1;
-            transform: scaleY(1.05);
-        }
-
+        .alert-item-content { flex: 1; }
+        .alert-item-title { font-weight: 500; font-size: 0.875rem; margin-bottom: 0.25rem; }
+        .alert-item-meta { font-size: 0.75rem; color: var(--text-secondary); }
+        
+        /* Chart */
+        .chart-container { height: 200px; background: linear-gradient(180deg, var(--bg) 0%, var(--card) 100%); border-radius: 8px; display: flex; align-items: flex-end; justify-content: space-around; padding: 1rem; }
+        .chart-bar { width: 40px; background: var(--primary); border-radius: 4px 4px 0 0; opacity: 0.8; transition: all 0.3s ease; cursor: pointer; position: relative; }
+        .chart-bar:hover { opacity: 1; }
+        .chart-bar::after { content: attr(data-value); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: 0.75rem; font-weight: 600; color: var(--text); padding-bottom: 4px; }
+        
         /* Footer */
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .footer a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        /* Page transitions */
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .footer { text-align: center; padding: 2rem; color: var(--text-secondary); font-size: 0.875rem; }
+        
+        /* Pages */
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         /* Bed Grid */
-        .bed-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 0.75rem;
-        }
-
-        .bed-item {
-            aspect-ratio: 1;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .bed-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .bed-item.occupied {
-            background: #FEE2E2;
-            color: #991B1B;
-            border-color: #FECACA;
-        }
-
-        .bed-item.available {
-            background: #D1FAE5;
-            color: #065F46;
-            border-color: #A7F3D0;
-        }
-
-        .bed-item.blocked {
-            background: #F3F4F6;
-            color: #6B7280;
-            border-color: #E5E7EB;
-        }
-
-        .bed-number {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .bed-status {
-            font-size: 0.625rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.25rem;
-        }
-
+        .bed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 0.75rem; }
+        .bed-item { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 2px solid transparent; position: relative; }
+        .bed-item:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .bed-item.occupied { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+        .bed-item.available { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+        .bed-item.blocked { background: #F3F4F6; color: #6B7280; border-color: #E5E7EB; }
+        .bed-number { font-size: 1.25rem; font-weight: 700; }
+        .bed-status { font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+        .bed-days { font-size: 0.6rem; color: inherit; opacity: 0.8; margin-top: 2px; }
+        
         /* Sector selector */
-        .sector-selector {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .sector-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border);
-            background: var(--card);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .sector-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .sector-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
+        .sector-selector { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .sector-btn { padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--card); border-radius: 8px; font-size: 0.875rem; cursor: pointer; transition: all 0.2s; }
+        .sector-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .sector-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--card); border-radius: 16px; padding: 2rem; max-width: 400px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal h3 { font-size: 1.25rem; margin-bottom: 1.5rem; }
+        .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #DC2626; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-warning:hover { background: #D97706; }
+        .btn-secondary { background: var(--border); color: var(--text); }
+        .btn-secondary:hover { background: #CBD5E1; }
+        .btn-block { width: 100%; margin-bottom: 0.5rem; }
+        
+        /* Form */
+        .form-group { margin-bottom: 1rem; }
+        .form-label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .form-input { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; }
+        .form-input:focus { outline: none; border-color: var(--primary); }
+        
+        /* Quick Stats */
+        .quick-stats { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .quick-stat { background: var(--card); padding: 0.75rem 1.25rem; border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; }
+        .quick-stat-value { font-size: 1.25rem; font-weight: 700; }
+        .quick-stat-label { font-size: 0.75rem; color: var(--text-secondary); }
+        
+        /* Actions Bar */
+        .actions-bar { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        
+        /* Highlight animation */
+        @keyframes highlight { 0% { box-shadow: 0 0 0 4px var(--primary); } 100% { box-shadow: none; } }
+        .bed-item.highlight { animation: highlight 1s ease-out; }
+        
+        /* Toast */
+        .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--text); color: white; padding: 1rem 1.5rem; border-radius: 8px; display: none; z-index: 1001; animation: slideIn 0.3s ease; }
+        .toast.active { display: block; }
+        @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <h1>
             <div class="header-icon">
@@ -620,7 +217,6 @@
         </div>
     </header>
 
-    <!-- Navigation -->
     <nav class="nav">
         <div class="nav-item active" data-page="dashboard">Dashboard</div>
         <div class="nav-item" data-page="sectors">Por Setor</div>
@@ -629,30 +225,22 @@
         <div class="nav-item" data-page="alerts">Alertas</div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main">
-        <!-- Dashboard Page -->
+        <!-- Dashboard -->
         <div id="dashboard" class="page active">
-            <!-- Alert Banner -->
             <div class="alerts-banner" id="mainAlert">
                 <div class="alert-icon">!</div>
                 <div class="alert-content">
-                    <div class="alert-title">Atenção: UTI Adulto com ocupação elevada</div>
-                    <div class="alert-message">Taxa de ocupação em 90% — apenas 1 leito disponível</div>
+                    <div class="alert-title" id="mainAlertTitle">Carregando...</div>
+                    <div class="alert-message" id="mainAlertMessage">Aguarde...</div>
                 </div>
             </div>
 
-            <!-- KPI Cards -->
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Taxa de Ocupação</span>
-                        <div class="card-icon blue">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="9" y1="3" x2="9" y2="21"/>
-                            </svg>
-                        </div>
+                        <div class="card-icon blue">📊</div>
                     </div>
                     <div class="gauge-container">
                         <div class="gauge">
@@ -660,7 +248,7 @@
                             <div class="gauge-mask"></div>
                             <div class="gauge-needle" id="occupancyNeedle"></div>
                         </div>
-                        <div class="gauge-value" id="occupancyValue">73.2%</div>
+                        <div class="gauge-value" id="occupancyValue">--%</div>
                     </div>
                     <div class="card-meta">Meta: 80-85%</div>
                 </div>
@@ -668,64 +256,34 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Leitos Disponíveis</span>
-                        <div class="card-icon green">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                        </div>
+                        <div class="card-icon green">✓</div>
                     </div>
-                    <div class="card-value" style="color: var(--success);" id="availableBeds">23</div>
-                    <div class="card-meta">
-                        de 97 leitos totais
-                        <span class="card-trend up">↑ 3 vs ontem</span>
-                    </div>
+                    <div class="card-value" style="color: var(--success);" id="availableBeds">--</div>
+                    <div class="card-meta" id="availableMeta">de -- leitos totais</div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Tempo Médio Permanência</span>
-                        <div class="card-icon amber">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12 6 12 12 16 14"/>
-                            </svg>
-                        </div>
+                        <div class="card-icon amber">⏱</div>
                     </div>
-                    <div class="card-value" id="avgStay">5.2<span style="font-size: 1rem; font-weight: 400;"> dias</span></div>
-                    <div class="card-meta">
-                        Meta: 5 dias
-                        <span class="card-trend down">↑ 0.2 vs mês anterior</span>
-                    </div>
+                    <div class="card-value" id="avgStay">--<span style="font-size: 1rem; font-weight: 400;"> dias</span></div>
+                    <div class="card-meta">Meta: 5 dias</div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Previsão de Altas (24h)</span>
-                        <div class="card-icon blue">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                            </svg>
-                        </div>
+                        <span class="card-title">Altas Hoje</span>
+                        <div class="card-icon blue">🔔</div>
                     </div>
-                    <div class="card-value" style="color: var(--primary);" id="predictedDischarges">8</div>
-                    <div class="card-meta">
-                        pacientes com alta prevista
-                    </div>
+                    <div class="card-value" style="color: var(--primary);" id="dischargesToday">--</div>
+                    <div class="card-meta">pacientes com alta registrada</div>
                 </div>
             </div>
 
-            <!-- Content Grid -->
             <div class="content-grid">
-                <!-- Sectors Overview -->
                 <div class="card">
-                    <h2 class="section-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                        </svg>
-                        Ocupação por Setor
-                    </h2>
+                    <h2 class="section-title">📍 Ocupação por Setor</h2>
                     <table class="sectors-table">
                         <thead>
                             <tr>
@@ -735,59 +293,58 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="sectorsTable">
-                            <!-- Populated by JS -->
-                        </tbody>
+                        <tbody id="sectorsTable"></tbody>
                     </table>
                 </div>
 
-                <!-- Alerts -->
                 <div class="card">
-                    <h2 class="section-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                            <line x1="12" y1="9" x2="12" y2="13"/>
-                            <line x1="12" y1="17" x2="12.01" y2="17"/>
-                        </svg>
-                        Alertas Ativos
-                    </h2>
-                    <div class="alerts-list" id="alertsList">
-                        <!-- Populated by JS -->
-                    </div>
+                    <h2 class="section-title">⚠️ Alertas Ativos</h2>
+                    <div class="alerts-list" id="alertsList"></div>
                 </div>
             </div>
         </div>
 
         <!-- Sectors Page -->
         <div id="sectors" class="page">
-            <div class="sector-selector" id="sectorSelector">
-                <!-- Populated by JS -->
+            <div class="sector-selector" id="sectorSelector"></div>
+            
+            <div class="quick-stats" id="sectorStats"></div>
+            
+            <div class="actions-bar">
+                <button class="btn btn-success" onclick="showAdmissionModal()">+ Nova Admissão</button>
+                <button class="btn btn-primary" onclick="showDischargeModal()">↑ Registrar Alta</button>
+                <button class="btn btn-warning" onclick="showBlockModal()">🔒 Bloquear Leito</button>
             </div>
+            
             <div class="card">
-                <h2 class="section-title" id="sectorTitle">UTI Adulto</h2>
-                <div class="bed-grid" id="bedGrid">
-                    <!-- Populated by JS -->
-                </div>
+                <h2 class="section-title" id="sectorTitle">Selecione um setor</h2>
+                <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.875rem;">Clique em um leito para alterar seu status</p>
+                <div class="bed-grid" id="bedGrid"></div>
             </div>
         </div>
 
         <!-- Map Page -->
         <div id="map" class="page">
-            <div class="card">
-                <h2 class="section-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"/>
-                        <rect x="14" y="3" width="7" height="7"/>
-                        <rect x="14" y="14" width="7" height="7"/>
-                        <rect x="3" y="14" width="7" height="7"/>
-                    </svg>
-                    Mapa Geral de Leitos
-                </h2>
-                <p style="margin-bottom: 1rem; color: var(--text-secondary);">Visão consolidada de todos os setores</p>
-                <div class="bed-grid" id="allBedsGrid">
-                    <!-- Populated by JS -->
+            <div class="quick-stats">
+                <div class="quick-stat">
+                    <span class="quick-stat-value" id="mapOccupied" style="color: var(--danger);">--</span>
+                    <span class="quick-stat-label">Ocupados</span>
                 </div>
-                <div style="margin-top: 1.5rem; display: flex; gap: 2rem; justify-content: center;">
+                <div class="quick-stat">
+                    <span class="quick-stat-value" id="mapAvailable" style="color: var(--success);">--</span>
+                    <span class="quick-stat-label">Disponíveis</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-value" id="mapBlocked" style="color: var(--neutral);">--</span>
+                    <span class="quick-stat-label">Bloqueados</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="section-title">🗺️ Mapa Geral de Leitos</h2>
+                <p style="margin-bottom: 1rem; color: var(--text-secondary);">Clique em um leito para ver detalhes ou alterar status</p>
+                <div class="bed-grid" id="allBedsGrid"></div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
                         <div style="width: 16px; height: 16px; background: #D1FAE5; border-radius: 4px; border: 2px solid #A7F3D0;"></div>
                         <span style="font-size: 0.875rem;">Disponível</span>
@@ -807,161 +364,325 @@
         <!-- History Page -->
         <div id="history" class="page">
             <div class="card">
-                <h2 class="section-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="20" x2="18" y2="10"/>
-                        <line x1="12" y1="20" x2="12" y2="4"/>
-                        <line x1="6" y1="20" x2="6" y2="14"/>
-                    </svg>
-                    Taxa de Ocupação - Últimos 7 dias
-                </h2>
-                <div class="chart-placeholder">
-                    <div class="chart-bar" style="height: 65%;"></div>
-                    <div class="chart-bar" style="height: 72%;"></div>
-                    <div class="chart-bar" style="height: 68%;"></div>
-                    <div class="chart-bar" style="height: 75%;"></div>
-                    <div class="chart-bar" style="height: 80%;"></div>
-                    <div class="chart-bar" style="height: 78%;"></div>
-                    <div class="chart-bar" style="height: 73%;"></div>
-                </div>
-                <div style="display: flex; justify-content: space-around; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);">
-                    <span>Seg</span>
-                    <span>Ter</span>
-                    <span>Qua</span>
-                    <span>Qui</span>
-                    <span>Sex</span>
-                    <span>Sáb</span>
-                    <span>Dom</span>
-                </div>
+                <h2 class="section-title">📈 Taxa de Ocupação - Últimos 7 dias</h2>
+                <div class="chart-container" id="chartContainer"></div>
+                <div style="display: flex; justify-content: space-around; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);" id="chartLabels"></div>
             </div>
 
             <div class="cards-grid" style="margin-top: 1.5rem;">
                 <div class="card">
-                    <div class="card-title">Média de Ocupação (Mês)</div>
-                    <div class="card-value" style="margin-top: 1rem;">74.5%</div>
+                    <div class="card-title">Média de Ocupação (7d)</div>
+                    <div class="card-value" style="margin-top: 1rem;" id="avgOccupancy7d">--%</div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Rotatividade (Mês)</div>
-                    <div class="card-value" style="margin-top: 1rem;">4.8</div>
+                    <div class="card-title">Total de Admissões (7d)</div>
+                    <div class="card-value" style="margin-top: 1rem;" id="totalAdmissions7d">--</div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Intervalo Substituição</div>
-                    <div class="card-value" style="margin-top: 1rem;">0.8<span style="font-size: 1rem;"> dias</span></div>
+                    <div class="card-title">Total de Altas (7d)</div>
+                    <div class="card-value" style="margin-top: 1rem;" id="totalDischarges7d">--</div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Taxa Readmissão 30d</div>
-                    <div class="card-value" style="margin-top: 1rem;">8.2%</div>
+                    <div class="card-title">Rotatividade (7d)</div>
+                    <div class="card-value" style="margin-top: 1rem;" id="turnover7d">--</div>
                 </div>
+            </div>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h2 class="section-title">📋 Movimentações Recentes</h2>
+                <div id="movementsList" style="max-height: 300px; overflow-y: auto;"></div>
             </div>
         </div>
 
         <!-- Alerts Page -->
         <div id="alerts" class="page">
+            <div class="actions-bar">
+                <button class="btn btn-secondary" onclick="clearAlerts()">Limpar Alertas Antigos</button>
+            </div>
             <div class="card">
-                <h2 class="section-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                    </svg>
-                    Todos os Alertas
-                </h2>
-                <div class="alerts-list" id="allAlertsList">
-                    <!-- Populated by JS -->
-                </div>
+                <h2 class="section-title">🔔 Todos os Alertas</h2>
+                <div class="alerts-list" id="allAlertsList"></div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
-        <p>Painel de Gestão de Leitos — Protótipo Conceitual</p>
+        <p>Painel de Gestão de Leitos — Protótipo Funcional</p>
         <p>TCC MBA Gestão em Saúde — USP</p>
     </footer>
 
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <h3 id="modalTitle">Modal</h3>
+            <div id="modalContent"></div>
+            <div class="modal-actions" id="modalActions"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
     <script>
-        // Data
-        const sectors = [
-            { id: 'uti-adulto', name: 'UTI Adulto', total: 10, occupied: 9, blocked: 0 },
-            { id: 'uti-ped', name: 'UTI Pediátrica', total: 6, occupied: 4, blocked: 0 },
-            { id: 'enf-clinica', name: 'Enfermaria Clínica', total: 30, occupied: 22, blocked: 2 },
-            { id: 'enf-cirurgica', name: 'Enfermaria Cirúrgica', total: 24, occupied: 18, blocked: 1 },
-            { id: 'pediatria', name: 'Pediatria', total: 12, occupied: 8, blocked: 0 },
-            { id: 'maternidade', name: 'Maternidade', total: 15, occupied: 10, blocked: 0 }
-        ];
+        // ========== DATA MANAGEMENT ==========
+        const STORAGE_KEY = 'painel-leitos-data';
+        
+        const defaultData = {
+            sectors: [
+                { id: 'uti-adulto', name: 'UTI Adulto', beds: Array(10).fill().map((_, i) => ({ id: i+1, status: i < 9 ? 'occupied' : 'available', admissionDate: i < 9 ? randomPastDate(7) : null })) },
+                { id: 'uti-ped', name: 'UTI Pediátrica', beds: Array(6).fill().map((_, i) => ({ id: i+1, status: i < 4 ? 'occupied' : 'available', admissionDate: i < 4 ? randomPastDate(5) : null })) },
+                { id: 'enf-clinica', name: 'Enfermaria Clínica', beds: Array(30).fill().map((_, i) => ({ id: i+1, status: i < 22 ? 'occupied' : i >= 28 ? 'blocked' : 'available', admissionDate: i < 22 ? randomPastDate(6) : null })) },
+                { id: 'enf-cirurgica', name: 'Enfermaria Cirúrgica', beds: Array(24).fill().map((_, i) => ({ id: i+1, status: i < 18 ? 'occupied' : i >= 23 ? 'blocked' : 'available', admissionDate: i < 18 ? randomPastDate(5) : null })) },
+                { id: 'pediatria', name: 'Pediatria', beds: Array(12).fill().map((_, i) => ({ id: i+1, status: i < 8 ? 'occupied' : 'available', admissionDate: i < 8 ? randomPastDate(4) : null })) },
+                { id: 'maternidade', name: 'Maternidade', beds: Array(15).fill().map((_, i) => ({ id: i+1, status: i < 10 ? 'occupied' : 'available', admissionDate: i < 10 ? randomPastDate(3) : null })) }
+            ],
+            movements: [],
+            alerts: [],
+            history: generateInitialHistory()
+        };
 
-        const alerts = [
-            { type: 'critical', title: 'UTI Adulto com ocupação crítica', message: '90% de ocupação — 1 leito disponível', time: '10 min atrás' },
-            { type: 'warning', title: 'Leito 15 parado há 26 horas', message: 'Enfermaria Clínica — verificar disponibilidade', time: '2 horas atrás' },
-            { type: 'warning', title: 'TMP acima da meta', message: 'Enfermaria Cirúrgica — 6.2 dias (meta: 5 dias)', time: '4 horas atrás' },
-            { type: 'info', title: '8 altas previstas hoje', message: 'Oportunidade de novas admissões', time: '6 horas atrás' },
-            { type: 'warning', title: '2 leitos bloqueados', message: 'Enfermaria Clínica — manutenção', time: '1 dia atrás' }
-        ];
+        function randomPastDate(maxDays) {
+            const d = new Date();
+            d.setDate(d.getDate() - Math.floor(Math.random() * maxDays));
+            return d.toISOString();
+        }
 
-        // Functions
+        function generateInitialHistory() {
+            const history = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                history.push({
+                    date: d.toISOString().split('T')[0],
+                    occupancy: 65 + Math.random() * 20,
+                    admissions: Math.floor(Math.random() * 8) + 2,
+                    discharges: Math.floor(Math.random() * 8) + 2
+                });
+            }
+            return history;
+        }
+
+        let data = loadData();
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error loading data:', e);
+                }
+            }
+            return JSON.parse(JSON.stringify(defaultData));
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function resetData() {
+            if (confirm('Tem certeza que deseja resetar todos os dados para o estado inicial?')) {
+                data = JSON.parse(JSON.stringify(defaultData));
+                saveData();
+                refreshAll();
+                showToast('Dados resetados com sucesso!');
+            }
+        }
+
+        // ========== CALCULATIONS ==========
+        function getStats() {
+            let totalBeds = 0, occupied = 0, available = 0, blocked = 0;
+            let totalStayDays = 0, occupiedCount = 0;
+
+            data.sectors.forEach(sector => {
+                sector.beds.forEach(bed => {
+                    totalBeds++;
+                    if (bed.status === 'occupied') {
+                        occupied++;
+                        if (bed.admissionDate) {
+                            const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
+                            totalStayDays += days;
+                            occupiedCount++;
+                        }
+                    } else if (bed.status === 'available') {
+                        available++;
+                    } else {
+                        blocked++;
+                    }
+                });
+            });
+
+            const occupancyRate = totalBeds > 0 ? (occupied / totalBeds) * 100 : 0;
+            const avgStay = occupiedCount > 0 ? totalStayDays / occupiedCount : 0;
+            const dischargesToday = data.movements.filter(m => 
+                m.type === 'discharge' && 
+                new Date(m.timestamp).toDateString() === new Date().toDateString()
+            ).length;
+
+            return { totalBeds, occupied, available, blocked, occupancyRate, avgStay, dischargesToday };
+        }
+
+        function getSectorStats(sectorId) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            if (!sector) return null;
+
+            const occupied = sector.beds.filter(b => b.status === 'occupied').length;
+            const available = sector.beds.filter(b => b.status === 'available').length;
+            const blocked = sector.beds.filter(b => b.status === 'blocked').length;
+            const total = sector.beds.length;
+            const occupancyRate = (occupied / total) * 100;
+
+            return { occupied, available, blocked, total, occupancyRate, name: sector.name };
+        }
+
+        // ========== UI FUNCTIONS ==========
         function updateTime() {
-            const now = new Date();
-            document.getElementById('lastUpdate').textContent = 
-                now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
         }
 
-        function getOccupancyClass(rate) {
-            if (rate >= 90) return 'high';
-            if (rate >= 75) return 'medium';
-            return 'low';
+        function setOccupancyGauge(percentage) {
+            const angle = -90 + (percentage * 1.8);
+            document.getElementById('occupancyNeedle').style.transform = `rotate(${angle}deg)`;
         }
 
-        function getStatusBadge(rate) {
-            if (rate >= 90) return { class: 'critical', text: 'Crítico' };
-            if (rate >= 80) return { class: 'warning', text: 'Atenção' };
-            return { class: 'ok', text: 'Normal' };
+        function refreshDashboard() {
+            const stats = getStats();
+
+            // KPIs
+            document.getElementById('occupancyValue').textContent = stats.occupancyRate.toFixed(1) + '%';
+            document.getElementById('availableBeds').textContent = stats.available;
+            document.getElementById('availableMeta').textContent = `de ${stats.totalBeds} leitos totais`;
+            document.getElementById('avgStay').innerHTML = stats.avgStay.toFixed(1) + '<span style="font-size: 1rem; font-weight: 400;"> dias</span>';
+            document.getElementById('dischargesToday').textContent = stats.dischargesToday;
+            setOccupancyGauge(stats.occupancyRate);
+
+            // Main Alert
+            const alertBanner = document.getElementById('mainAlert');
+            const alertTitle = document.getElementById('mainAlertTitle');
+            const alertMessage = document.getElementById('mainAlertMessage');
+
+            if (stats.occupancyRate >= 90) {
+                alertBanner.className = 'alerts-banner critical';
+                alertTitle.textContent = '🚨 Capacidade Crítica!';
+                alertMessage.textContent = `Taxa de ocupação em ${stats.occupancyRate.toFixed(1)}% — apenas ${stats.available} leitos disponíveis`;
+            } else if (stats.occupancyRate >= 80) {
+                alertBanner.className = 'alerts-banner';
+                alertTitle.textContent = '⚠️ Atenção: Ocupação elevada';
+                alertMessage.textContent = `Taxa de ocupação em ${stats.occupancyRate.toFixed(1)}% — ${stats.available} leitos disponíveis`;
+            } else {
+                alertBanner.className = 'alerts-banner ok';
+                alertTitle.textContent = '✓ Operação Normal';
+                alertMessage.textContent = `Taxa de ocupação em ${stats.occupancyRate.toFixed(1)}% — ${stats.available} leitos disponíveis`;
+            }
+
+            // Sectors Table
+            renderSectorsTable();
+
+            // Alerts List
+            renderAlerts();
         }
 
         function renderSectorsTable() {
             const tbody = document.getElementById('sectorsTable');
-            tbody.innerHTML = sectors.map(sector => {
-                const available = sector.total - sector.occupied - sector.blocked;
-                const rate = Math.round((sector.occupied / sector.total) * 100);
-                const status = getStatusBadge(rate);
+            tbody.innerHTML = data.sectors.map(sector => {
+                const stats = getSectorStats(sector.id);
+                const statusClass = stats.occupancyRate >= 90 ? 'critical' : stats.occupancyRate >= 80 ? 'warning' : 'ok';
+                const statusText = stats.occupancyRate >= 90 ? 'Crítico' : stats.occupancyRate >= 80 ? 'Atenção' : 'Normal';
+                const fillClass = stats.occupancyRate >= 90 ? 'high' : stats.occupancyRate >= 75 ? 'medium' : 'low';
+
                 return `
-                    <tr>
+                    <tr onclick="navigateToSector('${sector.id}')" style="cursor: pointer;">
                         <td>
                             <div class="sector-name">
-                                <div class="sector-icon" style="background: ${rate >= 90 ? 'var(--danger)' : rate >= 75 ? 'var(--warning)' : 'var(--success)'}"></div>
+                                <div class="sector-icon" style="background: ${statusClass === 'critical' ? 'var(--danger)' : statusClass === 'warning' ? 'var(--warning)' : 'var(--success)'}"></div>
                                 ${sector.name}
                             </div>
                         </td>
                         <td>
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
                                 <div class="occupancy-bar" style="width: 100px;">
-                                    <div class="occupancy-fill ${getOccupancyClass(rate)}" style="width: ${rate}%;"></div>
+                                    <div class="occupancy-fill ${fillClass}" style="width: ${stats.occupancyRate}%;"></div>
                                 </div>
-                                <span>${rate}%</span>
+                                <span>${stats.occupancyRate.toFixed(0)}%</span>
                             </div>
                         </td>
-                        <td>${sector.occupied}/${sector.total} ${sector.blocked > 0 ? `<span style="color: var(--text-secondary);">(${sector.blocked} bloq.)</span>` : ''}</td>
-                        <td><span class="status-badge ${status.class}">${status.text}</span></td>
+                        <td>${stats.occupied}/${stats.total} ${stats.blocked > 0 ? `<span style="color: var(--text-secondary);">(${stats.blocked} bloq.)</span>` : ''}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     </tr>
                 `;
             }).join('');
         }
 
-        function renderAlerts(containerId, limit = null) {
-            const container = document.getElementById(containerId);
-            const alertsToShow = limit ? alerts.slice(0, limit) : alerts;
-            container.innerHTML = alertsToShow.map(alert => `
-                <div class="alert-item ${alert.type}">
-                    <div class="alert-item-icon">${alert.type === 'critical' ? '!' : alert.type === 'warning' ? '⚠' : 'ℹ'}</div>
-                    <div class="alert-item-content">
-                        <div class="alert-item-title">${alert.title}</div>
-                        <div class="alert-item-meta">${alert.message} • ${alert.time}</div>
+        function renderAlerts() {
+            const alertsList = document.getElementById('alertsList');
+            const allAlertsList = document.getElementById('allAlertsList');
+
+            // Generate dynamic alerts based on current state
+            const dynamicAlerts = [];
+
+            data.sectors.forEach(sector => {
+                const stats = getSectorStats(sector.id);
+                if (stats.occupancyRate >= 90) {
+                    dynamicAlerts.push({
+                        type: 'critical',
+                        title: `${sector.name} com ocupação crítica`,
+                        message: `${stats.occupancyRate.toFixed(0)}% de ocupação — ${stats.available} leito(s) disponível(is)`,
+                        time: 'Agora'
+                    });
+                }
+                if (stats.blocked > 0) {
+                    dynamicAlerts.push({
+                        type: 'warning',
+                        title: `${stats.blocked} leito(s) bloqueado(s)`,
+                        message: `${sector.name}`,
+                        time: 'Ativo'
+                    });
+                }
+
+                // Check for long stays
+                sector.beds.forEach(bed => {
+                    if (bed.status === 'occupied' && bed.admissionDate) {
+                        const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
+                        if (days > 7) {
+                            dynamicAlerts.push({
+                                type: 'warning',
+                                title: `Leito ${bed.id} com permanência prolongada`,
+                                message: `${sector.name} — ${days} dias de internação`,
+                                time: 'Verificar'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Add saved alerts
+            const allAlerts = [...dynamicAlerts, ...data.alerts];
+
+            const renderList = (alerts, limit = null) => {
+                const toShow = limit ? alerts.slice(0, limit) : alerts;
+                if (toShow.length === 0) {
+                    return '<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Nenhum alerta no momento</p>';
+                }
+                return toShow.map(alert => `
+                    <div class="alert-item ${alert.type}">
+                        <div class="alert-item-icon">${alert.type === 'critical' ? '!' : alert.type === 'warning' ? '⚠' : 'ℹ'}</div>
+                        <div class="alert-item-content">
+                            <div class="alert-item-title">${alert.title}</div>
+                            <div class="alert-item-meta">${alert.message} • ${alert.time}</div>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            };
+
+            alertsList.innerHTML = renderList(allAlerts, 5);
+            allAlertsList.innerHTML = renderList(allAlerts);
         }
+
+        let currentSectorId = null;
 
         function renderSectorSelector() {
             const container = document.getElementById('sectorSelector');
-            container.innerHTML = sectors.map((sector, index) => `
+            container.innerHTML = data.sectors.map((sector, index) => `
                 <button class="sector-btn ${index === 0 ? 'active' : ''}" data-sector="${sector.id}">${sector.name}</button>
             `).join('');
 
@@ -972,83 +693,393 @@
                     renderBedGrid(btn.dataset.sector);
                 });
             });
+
+            currentSectorId = data.sectors[0].id;
+            renderBedGrid(currentSectorId);
+        }
+
+        function renderSectorStats(sectorId) {
+            const stats = getSectorStats(sectorId);
+            if (!stats) return;
+
+            document.getElementById('sectorStats').innerHTML = `
+                <div class="quick-stat">
+                    <span class="quick-stat-value" style="color: var(--danger);">${stats.occupied}</span>
+                    <span class="quick-stat-label">Ocupados</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-value" style="color: var(--success);">${stats.available}</span>
+                    <span class="quick-stat-label">Disponíveis</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-value" style="color: var(--neutral);">${stats.blocked}</span>
+                    <span class="quick-stat-label">Bloqueados</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-value">${stats.occupancyRate.toFixed(1)}%</span>
+                    <span class="quick-stat-label">Ocupação</span>
+                </div>
+            `;
         }
 
         function renderBedGrid(sectorId) {
-            const sector = sectors.find(s => s.id === sectorId);
+            currentSectorId = sectorId;
+            const sector = data.sectors.find(s => s.id === sectorId);
+            if (!sector) return;
+
             document.getElementById('sectorTitle').textContent = sector.name;
-            
+            renderSectorStats(sectorId);
+
             const container = document.getElementById('bedGrid');
-            let beds = [];
-            
-            for (let i = 1; i <= sector.total; i++) {
-                let status = 'available';
-                if (i <= sector.occupied) status = 'occupied';
-                else if (i > sector.total - sector.blocked) status = 'blocked';
-                
-                beds.push(`
-                    <div class="bed-item ${status}">
-                        <div class="bed-number">${i}</div>
-                        <div class="bed-status">${status === 'occupied' ? 'Ocupado' : status === 'available' ? 'Livre' : 'Bloqueado'}</div>
+            container.innerHTML = sector.beds.map(bed => {
+                let daysText = '';
+                if (bed.status === 'occupied' && bed.admissionDate) {
+                    const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
+                    daysText = `<div class="bed-days">${days}d</div>`;
+                }
+                return `
+                    <div class="bed-item ${bed.status}" onclick="openBedModal('${sectorId}', ${bed.id})" data-bed="${bed.id}">
+                        <div class="bed-number">${bed.id}</div>
+                        <div class="bed-status">${bed.status === 'occupied' ? 'Ocupado' : bed.status === 'available' ? 'Livre' : 'Bloqueado'}</div>
+                        ${daysText}
                     </div>
-                `);
-            }
-            
-            container.innerHTML = beds.join('');
+                `;
+            }).join('');
         }
 
         function renderAllBeds() {
+            const stats = getStats();
+            document.getElementById('mapOccupied').textContent = stats.occupied;
+            document.getElementById('mapAvailable').textContent = stats.available;
+            document.getElementById('mapBlocked').textContent = stats.blocked;
+
             const container = document.getElementById('allBedsGrid');
-            let beds = [];
-            let bedNumber = 1;
-            
-            sectors.forEach(sector => {
-                for (let i = 1; i <= sector.total; i++) {
-                    let status = 'available';
-                    if (i <= sector.occupied) status = 'occupied';
-                    else if (i > sector.total - sector.blocked) status = 'blocked';
-                    
-                    beds.push(`
-                        <div class="bed-item ${status}" title="${sector.name} - Leito ${i}">
-                            <div class="bed-number">${bedNumber}</div>
-                            <div class="bed-status">${status === 'occupied' ? 'Ocup.' : status === 'available' ? 'Livre' : 'Bloq.'}</div>
+            let html = '';
+            let globalId = 1;
+
+            data.sectors.forEach(sector => {
+                sector.beds.forEach(bed => {
+                    let daysText = '';
+                    if (bed.status === 'occupied' && bed.admissionDate) {
+                        const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
+                        daysText = `<div class="bed-days">${days}d</div>`;
+                    }
+                    html += `
+                        <div class="bed-item ${bed.status}" onclick="openBedModal('${sector.id}', ${bed.id})" title="${sector.name} - Leito ${bed.id}">
+                            <div class="bed-number">${globalId}</div>
+                            <div class="bed-status">${bed.status === 'occupied' ? 'Ocup.' : bed.status === 'available' ? 'Livre' : 'Bloq.'}</div>
+                            ${daysText}
                         </div>
-                    `);
-                    bedNumber++;
-                }
+                    `;
+                    globalId++;
+                });
             });
-            
-            container.innerHTML = beds.join('');
+
+            container.innerHTML = html;
         }
 
-        function setOccupancyGauge(percentage) {
-            // Gauge goes from -90deg (0%) to 90deg (100%)
-            // But we only show 0-100% in the top half
-            const angle = -90 + (percentage * 1.8);
-            document.getElementById('occupancyNeedle').style.transform = `rotate(${angle}deg)`;
+        function renderHistory() {
+            const history = data.history;
+            const container = document.getElementById('chartContainer');
+            const labelsContainer = document.getElementById('chartLabels');
+
+            const maxOcc = Math.max(...history.map(h => h.occupancy));
+            const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+            container.innerHTML = history.map(h => {
+                const height = (h.occupancy / maxOcc) * 100;
+                return `<div class="chart-bar" style="height: ${height}%;" data-value="${h.occupancy.toFixed(0)}%"></div>`;
+            }).join('');
+
+            labelsContainer.innerHTML = history.map(h => {
+                const d = new Date(h.date);
+                return `<span>${days[d.getDay()]}</span>`;
+            }).join('');
+
+            // Stats
+            const avgOcc = history.reduce((a, b) => a + b.occupancy, 0) / history.length;
+            const totalAdm = history.reduce((a, b) => a + b.admissions, 0);
+            const totalDis = history.reduce((a, b) => a + b.discharges, 0);
+            const turnover = totalAdm / getStats().totalBeds;
+
+            document.getElementById('avgOccupancy7d').textContent = avgOcc.toFixed(1) + '%';
+            document.getElementById('totalAdmissions7d').textContent = totalAdm;
+            document.getElementById('totalDischarges7d').textContent = totalDis;
+            document.getElementById('turnover7d').textContent = turnover.toFixed(2);
+
+            // Movements
+            const movementsList = document.getElementById('movementsList');
+            const recentMovements = data.movements.slice(-20).reverse();
+            if (recentMovements.length === 0) {
+                movementsList.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 1rem;">Nenhuma movimentação registrada</p>';
+            } else {
+                movementsList.innerHTML = recentMovements.map(m => {
+                    const icon = m.type === 'admission' ? '↓' : m.type === 'discharge' ? '↑' : '🔒';
+                    const color = m.type === 'admission' ? 'var(--success)' : m.type === 'discharge' ? 'var(--primary)' : 'var(--warning)';
+                    const d = new Date(m.timestamp);
+                    return `
+                        <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-bottom: 1px solid var(--border);">
+                            <span style="font-size: 1.25rem; color: ${color};">${icon}</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 500; font-size: 0.875rem;">${m.type === 'admission' ? 'Admissão' : m.type === 'discharge' ? 'Alta' : 'Alteração'}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">${m.sectorName} - Leito ${m.bedId}</div>
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);">${d.toLocaleString('pt-BR')}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
         }
 
-        // Navigation
+        // ========== ACTIONS ==========
+        function openBedModal(sectorId, bedId) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const bed = sector.beds.find(b => b.id === bedId);
+
+            document.getElementById('modalTitle').textContent = `${sector.name} - Leito ${bedId}`;
+
+            let content = `<p style="margin-bottom: 1rem;">Status atual: <strong>${bed.status === 'occupied' ? 'Ocupado' : bed.status === 'available' ? 'Disponível' : 'Bloqueado'}</strong></p>`;
+
+            if (bed.status === 'occupied' && bed.admissionDate) {
+                const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
+                content += `<p style="margin-bottom: 1rem;">Dias de internação: <strong>${days}</strong></p>`;
+            }
+
+            document.getElementById('modalContent').innerHTML = content;
+
+            let actions = '';
+            if (bed.status === 'occupied') {
+                actions = `
+                    <button class="btn btn-primary btn-block" onclick="changeBedStatus('${sectorId}', ${bedId}, 'discharge')">↑ Registrar Alta</button>
+                `;
+            } else if (bed.status === 'available') {
+                actions = `
+                    <button class="btn btn-success btn-block" onclick="changeBedStatus('${sectorId}', ${bedId}, 'admission')">+ Nova Admissão</button>
+                    <button class="btn btn-warning btn-block" onclick="changeBedStatus('${sectorId}', ${bedId}, 'block')">🔒 Bloquear</button>
+                `;
+            } else {
+                actions = `
+                    <button class="btn btn-success btn-block" onclick="changeBedStatus('${sectorId}', ${bedId}, 'unblock')">🔓 Desbloquear</button>
+                `;
+            }
+            actions += `<button class="btn btn-secondary btn-block" onclick="closeModal()">Cancelar</button>`;
+
+            document.getElementById('modalActions').innerHTML = actions;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function changeBedStatus(sectorId, bedId, action) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const bed = sector.beds.find(b => b.id === bedId);
+
+            const movement = {
+                timestamp: new Date().toISOString(),
+                sectorId,
+                sectorName: sector.name,
+                bedId,
+                type: action
+            };
+
+            if (action === 'admission') {
+                bed.status = 'occupied';
+                bed.admissionDate = new Date().toISOString();
+                movement.type = 'admission';
+                showToast('Admissão registrada com sucesso!');
+            } else if (action === 'discharge') {
+                bed.status = 'available';
+                bed.admissionDate = null;
+                movement.type = 'discharge';
+                showToast('Alta registrada com sucesso!');
+            } else if (action === 'block') {
+                bed.status = 'blocked';
+                bed.admissionDate = null;
+                movement.type = 'block';
+                showToast('Leito bloqueado!');
+            } else if (action === 'unblock') {
+                bed.status = 'available';
+                movement.type = 'unblock';
+                showToast('Leito desbloqueado!');
+            }
+
+            data.movements.push(movement);
+
+            // Update history
+            const today = new Date().toISOString().split('T')[0];
+            let todayHistory = data.history.find(h => h.date === today);
+            if (!todayHistory) {
+                todayHistory = { date: today, occupancy: 0, admissions: 0, discharges: 0 };
+                data.history.push(todayHistory);
+                if (data.history.length > 7) data.history.shift();
+            }
+            if (action === 'admission') todayHistory.admissions++;
+            if (action === 'discharge') todayHistory.discharges++;
+            todayHistory.occupancy = getStats().occupancyRate;
+
+            saveData();
+            closeModal();
+            refreshAll();
+
+            // Highlight the bed
+            setTimeout(() => {
+                const bedEl = document.querySelector(`[data-bed="${bedId}"]`);
+                if (bedEl) {
+                    bedEl.classList.add('highlight');
+                    setTimeout(() => bedEl.classList.remove('highlight'), 1000);
+                }
+            }, 100);
+        }
+
+        function showAdmissionModal() {
+            const sector = data.sectors.find(s => s.id === currentSectorId);
+            const availableBeds = sector.beds.filter(b => b.status === 'available');
+
+            if (availableBeds.length === 0) {
+                showToast('Não há leitos disponíveis neste setor!');
+                return;
+            }
+
+            document.getElementById('modalTitle').textContent = 'Nova Admissão - ' + sector.name;
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Selecione o leito:</label>
+                    <select class="form-input" id="admissionBedSelect">
+                        ${availableBeds.map(b => `<option value="${b.id}">Leito ${b.id}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-success" onclick="confirmAdmission()">Confirmar Admissão</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function confirmAdmission() {
+            const bedId = parseInt(document.getElementById('admissionBedSelect').value);
+            changeBedStatus(currentSectorId, bedId, 'admission');
+        }
+
+        function showDischargeModal() {
+            const sector = data.sectors.find(s => s.id === currentSectorId);
+            const occupiedBeds = sector.beds.filter(b => b.status === 'occupied');
+
+            if (occupiedBeds.length === 0) {
+                showToast('Não há pacientes internados neste setor!');
+                return;
+            }
+
+            document.getElementById('modalTitle').textContent = 'Registrar Alta - ' + sector.name;
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Selecione o leito:</label>
+                    <select class="form-input" id="dischargeBedSelect">
+                        ${occupiedBeds.map(b => {
+                            const days = Math.ceil((new Date() - new Date(b.admissionDate)) / (1000 * 60 * 60 * 24));
+                            return `<option value="${b.id}">Leito ${b.id} (${days} dias)</option>`;
+                        }).join('')}
+                    </select>
+                </div>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-primary" onclick="confirmDischarge()">Confirmar Alta</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function confirmDischarge() {
+            const bedId = parseInt(document.getElementById('dischargeBedSelect').value);
+            changeBedStatus(currentSectorId, bedId, 'discharge');
+        }
+
+        function showBlockModal() {
+            const sector = data.sectors.find(s => s.id === currentSectorId);
+            const availableBeds = sector.beds.filter(b => b.status === 'available');
+
+            if (availableBeds.length === 0) {
+                showToast('Não há leitos disponíveis para bloquear!');
+                return;
+            }
+
+            document.getElementById('modalTitle').textContent = 'Bloquear Leito - ' + sector.name;
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Selecione o leito:</label>
+                    <select class="form-input" id="blockBedSelect">
+                        ${availableBeds.map(b => `<option value="${b.id}">Leito ${b.id}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-warning" onclick="confirmBlock()">Bloquear</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function confirmBlock() {
+            const bedId = parseInt(document.getElementById('blockBedSelect').value);
+            changeBedStatus(currentSectorId, bedId, 'block');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 3000);
+        }
+
+        function clearAlerts() {
+            data.alerts = [];
+            saveData();
+            renderAlerts();
+            showToast('Alertas limpos!');
+        }
+
+        function navigateToSector(sectorId) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelector('[data-page="sectors"]').classList.add('active');
+            document.getElementById('sectors').classList.add('active');
+
+            document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`[data-sector="${sectorId}"]`).classList.add('active');
+            renderBedGrid(sectorId);
+        }
+
+        function refreshAll() {
+            refreshDashboard();
+            if (currentSectorId) renderBedGrid(currentSectorId);
+            renderAllBeds();
+            renderHistory();
+        }
+
+        // ========== NAVIGATION ==========
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                
                 item.classList.add('active');
                 document.getElementById(item.dataset.page).classList.add('active');
             });
         });
 
-        // Initialize
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalOverlay')) closeModal();
+        });
+
+        // ========== INIT ==========
         updateTime();
         setInterval(updateTime, 60000);
-        renderSectorsTable();
-        renderAlerts('alertsList', 4);
-        renderAlerts('allAlertsList');
         renderSectorSelector();
-        renderBedGrid('uti-adulto');
-        renderAllBeds();
-        setOccupancyGauge(73.2);
+        refreshAll();
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshAll, 30000);
     </script>
 </body>
 </html>
