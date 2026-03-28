@@ -223,6 +223,7 @@
         <div class="nav-item" data-page="map">Mapa de Leitos</div>
         <div class="nav-item" data-page="history">Histórico</div>
         <div class="nav-item" data-page="alerts">Alertas</div>
+        <div class="nav-item" data-page="config">⚙️ Configurar</div>
     </nav>
 
     <main class="main">
@@ -402,6 +403,58 @@
             <div class="card">
                 <h2 class="section-title">🔔 Todos os Alertas</h2>
                 <div class="alerts-list" id="allAlertsList"></div>
+            </div>
+        </div>
+
+        <!-- Config Page -->
+        <div id="config" class="page">
+            <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="card" style="cursor: pointer;" onclick="showCreateSectorModal()">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🏥</div>
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Criar Novo Setor</h3>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary);">Adicione uma nova unidade ao hospital</p>
+                    </div>
+                </div>
+                <div class="card" style="cursor: pointer;" onclick="showAddBedsModal()">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🛏️</div>
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Adicionar Leitos</h3>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary);">Adicione novos leitos a um setor</p>
+                    </div>
+                </div>
+                <div class="card" style="cursor: pointer;" onclick="showRemoveBedsModal()">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">❌</div>
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Remover Leitos</h3>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary);">Exclua leitos de um setor</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h2 class="section-title">🏢 Setores Cadastrados</h2>
+                <table class="sectors-table">
+                    <thead>
+                        <tr>
+                            <th>Setor</th>
+                            <th>Total de Leitos</th>
+                            <th>Ocupados</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="configSectorsTable"></tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h2 class="section-title">🔧 Ações do Sistema</h2>
+                <div class="actions-bar">
+                    <button class="btn btn-danger" onclick="resetData()">🔄 Resetar Todos os Dados</button>
+                    <button class="btn btn-secondary" onclick="exportData()">📥 Exportar Dados</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📤 Importar Dados</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                </div>
             </div>
         </div>
     </main>
@@ -1056,6 +1109,316 @@
             if (currentSectorId) renderBedGrid(currentSectorId);
             renderAllBeds();
             renderHistory();
+            renderConfigSectors();
+        }
+
+        // ========== CONFIG FUNCTIONS ==========
+        function renderConfigSectors() {
+            const tbody = document.getElementById('configSectorsTable');
+            if (!tbody) return;
+            
+            tbody.innerHTML = data.sectors.map(sector => {
+                const occupied = sector.beds.filter(b => b.status === 'occupied').length;
+                return `
+                    <tr>
+                        <td><strong>${sector.name}</strong></td>
+                        <td>${sector.beds.length}</td>
+                        <td>${occupied}</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 0.5rem 0.75rem; font-size: 0.75rem;" onclick="showEditSectorModal('${sector.id}')">✏️ Editar</button>
+                            <button class="btn btn-danger" style="padding: 0.5rem 0.75rem; font-size: 0.75rem;" onclick="deleteSector('${sector.id}')">🗑️ Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function showCreateSectorModal() {
+            document.getElementById('modalTitle').textContent = '🏥 Criar Novo Setor';
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Nome do Setor:</label>
+                    <input type="text" class="form-input" id="newSectorName" placeholder="Ex: UTI Coronariana">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantidade inicial de leitos:</label>
+                    <input type="number" class="form-input" id="newSectorBeds" min="1" max="100" value="10">
+                </div>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-success" onclick="confirmCreateSector()">Criar Setor</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function confirmCreateSector() {
+            const name = document.getElementById('newSectorName').value.trim();
+            const bedsCount = parseInt(document.getElementById('newSectorBeds').value);
+
+            if (!name) {
+                showToast('Digite o nome do setor!');
+                return;
+            }
+            if (bedsCount < 1 || bedsCount > 100) {
+                showToast('Quantidade de leitos deve ser entre 1 e 100!');
+                return;
+            }
+
+            const id = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            
+            if (data.sectors.find(s => s.id === id)) {
+                showToast('Já existe um setor com este nome!');
+                return;
+            }
+
+            const newSector = {
+                id,
+                name,
+                beds: Array(bedsCount).fill().map((_, i) => ({
+                    id: i + 1,
+                    status: 'available',
+                    admissionDate: null
+                }))
+            };
+
+            data.sectors.push(newSector);
+            saveData();
+            closeModal();
+            refreshAll();
+            renderSectorSelector();
+            showToast(`Setor "${name}" criado com ${bedsCount} leitos!`);
+        }
+
+        function showEditSectorModal(sectorId) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            if (!sector) return;
+
+            document.getElementById('modalTitle').textContent = '✏️ Editar Setor';
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Nome do Setor:</label>
+                    <input type="text" class="form-input" id="editSectorName" value="${sector.name}">
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 1rem;">
+                    Total de leitos: ${sector.beds.length}<br>
+                    Para adicionar ou remover leitos, use as opções específicas.
+                </p>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-primary" onclick="confirmEditSector('${sectorId}')">Salvar</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function confirmEditSector(sectorId) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const newName = document.getElementById('editSectorName').value.trim();
+
+            if (!newName) {
+                showToast('Digite o nome do setor!');
+                return;
+            }
+
+            sector.name = newName;
+            saveData();
+            closeModal();
+            refreshAll();
+            renderSectorSelector();
+            showToast('Setor atualizado!');
+        }
+
+        function deleteSector(sectorId) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const occupied = sector.beds.filter(b => b.status === 'occupied').length;
+
+            if (occupied > 0) {
+                showToast(`Não é possível excluir: ${occupied} leito(s) ocupado(s)!`);
+                return;
+            }
+
+            if (!confirm(`Tem certeza que deseja excluir o setor "${sector.name}"?\nEsta ação não pode ser desfeita.`)) {
+                return;
+            }
+
+            data.sectors = data.sectors.filter(s => s.id !== sectorId);
+            saveData();
+            refreshAll();
+            renderSectorSelector();
+            
+            if (currentSectorId === sectorId && data.sectors.length > 0) {
+                currentSectorId = data.sectors[0].id;
+                renderBedGrid(currentSectorId);
+            }
+            
+            showToast('Setor excluído!');
+        }
+
+        function showAddBedsModal() {
+            document.getElementById('modalTitle').textContent = '🛏️ Adicionar Leitos';
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Selecione o setor:</label>
+                    <select class="form-input" id="addBedsSector">
+                        ${data.sectors.map(s => `<option value="${s.id}">${s.name} (${s.beds.length} leitos)</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantidade de leitos a adicionar:</label>
+                    <input type="number" class="form-input" id="addBedsCount" min="1" max="50" value="5">
+                </div>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-success" onclick="confirmAddBeds()">Adicionar</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function confirmAddBeds() {
+            const sectorId = document.getElementById('addBedsSector').value;
+            const count = parseInt(document.getElementById('addBedsCount').value);
+
+            if (count < 1 || count > 50) {
+                showToast('Quantidade deve ser entre 1 e 50!');
+                return;
+            }
+
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const lastId = sector.beds.length > 0 ? Math.max(...sector.beds.map(b => b.id)) : 0;
+
+            for (let i = 1; i <= count; i++) {
+                sector.beds.push({
+                    id: lastId + i,
+                    status: 'available',
+                    admissionDate: null
+                });
+            }
+
+            saveData();
+            closeModal();
+            refreshAll();
+            showToast(`${count} leito(s) adicionado(s) ao ${sector.name}!`);
+        }
+
+        function showRemoveBedsModal() {
+            document.getElementById('modalTitle').textContent = '❌ Remover Leitos';
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Selecione o setor:</label>
+                    <select class="form-input" id="removeBedsSector" onchange="updateRemoveBedsOptions()">
+                        ${data.sectors.map(s => {
+                            const available = s.beds.filter(b => b.status === 'available').length;
+                            return `<option value="${s.id}">${s.name} (${available} disponíveis)</option>`;
+                        }).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Leitos disponíveis para remover:</label>
+                    <div id="removeBedsCheckboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem;"></div>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    ⚠️ Apenas leitos disponíveis podem ser removidos
+                </p>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-danger" onclick="confirmRemoveBeds()">Remover Selecionados</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+            updateRemoveBedsOptions();
+        }
+
+        function updateRemoveBedsOptions() {
+            const sectorId = document.getElementById('removeBedsSector').value;
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const availableBeds = sector.beds.filter(b => b.status === 'available');
+
+            const container = document.getElementById('removeBedsCheckboxes');
+            if (availableBeds.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); padding: 1rem; text-align: center;">Nenhum leito disponível para remover</p>';
+            } else {
+                container.innerHTML = availableBeds.map(b => `
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" value="${b.id}" class="remove-bed-checkbox">
+                        Leito ${b.id}
+                    </label>
+                `).join('');
+            }
+        }
+
+        function confirmRemoveBeds() {
+            const sectorId = document.getElementById('removeBedsSector').value;
+            const checkboxes = document.querySelectorAll('.remove-bed-checkbox:checked');
+            const bedsToRemove = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+            if (bedsToRemove.length === 0) {
+                showToast('Selecione pelo menos um leito!');
+                return;
+            }
+
+            const sector = data.sectors.find(s => s.id === sectorId);
+            sector.beds = sector.beds.filter(b => !bedsToRemove.includes(b.id));
+
+            // Renumerar os leitos
+            sector.beds.forEach((bed, index) => {
+                bed.id = index + 1;
+            });
+
+            saveData();
+            closeModal();
+            refreshAll();
+            showToast(`${bedsToRemove.length} leito(s) removido(s)!`);
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `painel-leitos-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Dados exportados!');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (importedData.sectors && Array.isArray(importedData.sectors)) {
+                        if (confirm('Isso substituirá todos os dados atuais. Continuar?')) {
+                            data = importedData;
+                            saveData();
+                            refreshAll();
+                            renderSectorSelector();
+                            showToast('Dados importados com sucesso!');
+                        }
+                    } else {
+                        showToast('Arquivo inválido!');
+                    }
+                } catch (err) {
+                    showToast('Erro ao ler arquivo!');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function resetData() {
+            if (confirm('Tem certeza que deseja resetar TODOS os dados?\nEsta ação não pode ser desfeita.')) {
+                data = JSON.parse(JSON.stringify(defaultData));
+                saveData();
+                refreshAll();
+                renderSectorSelector();
+                showToast('Dados resetados!');
+            }
         }
 
         // ========== NAVIGATION ==========
