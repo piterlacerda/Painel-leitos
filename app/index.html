@@ -143,6 +143,13 @@
         .bed-number { font-size: 1.25rem; font-weight: 700; }
         .bed-status { font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
         .bed-days { font-size: 0.6rem; color: inherit; opacity: 0.8; margin-top: 2px; }
+        .bed-item.discharge-soon { border-color: var(--warning) !important; box-shadow: 0 0 0 2px var(--warning); }
+        .bed-item.discharge-soon::before { content: '⏰'; position: absolute; top: 4px; right: 4px; font-size: 0.7rem; }
+        .discharge-alert { background: linear-gradient(135deg, #FEF3C7, #FDE68A); border: 1px solid var(--warning); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem; font-size: 0.875rem; }
+        .discharge-alert-title { font-weight: 600; color: #92400E; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        .discharge-alert-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .discharge-alert-item:last-child { border-bottom: none; }
+        .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.75rem; }
         
         /* Sector selector */
         .sector-selector { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -278,7 +285,7 @@
                         <div class="card-icon blue">🔔</div>
                     </div>
                     <div class="card-value" style="color: var(--primary);" id="dischargesToday">--</div>
-                    <div class="card-meta">pacientes com alta registrada</div>
+                    <div class="card-meta">altas previstas em 24h</div>
                 </div>
             </div>
 
@@ -480,14 +487,35 @@
         // ========== DATA MANAGEMENT ==========
         const STORAGE_KEY = 'painel-leitos-data';
         
+        // Timezone: Brasília (UTC-3)
+        function formatBrasiliaDateTime(isoString) {
+            if (!isoString) return '--';
+            const d = new Date(isoString);
+            return d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+        
+        function getHoursUntilDischarge(expectedDischarge) {
+            if (!expectedDischarge) return null;
+            const now = new Date();
+            const discharge = new Date(expectedDischarge);
+            return (discharge - now) / (1000 * 60 * 60);
+        }
+        
+        function generateExpectedDischarge(daysFromNow) {
+            const d = new Date();
+            d.setDate(d.getDate() + daysFromNow);
+            d.setHours(10, 0, 0, 0);
+            return d.toISOString();
+        }
+        
         const defaultData = {
             sectors: [
-                { id: 'uti-adulto', name: 'UTI Adulto', beds: Array(10).fill().map((_, i) => ({ id: i+1, status: i < 9 ? 'occupied' : 'available', admissionDate: i < 9 ? randomPastDate(7) : null })) },
-                { id: 'uti-ped', name: 'UTI Pediátrica', beds: Array(6).fill().map((_, i) => ({ id: i+1, status: i < 4 ? 'occupied' : 'available', admissionDate: i < 4 ? randomPastDate(5) : null })) },
-                { id: 'enf-clinica', name: 'Enfermaria Clínica', beds: Array(30).fill().map((_, i) => ({ id: i+1, status: i < 22 ? 'occupied' : i >= 28 ? 'blocked' : 'available', admissionDate: i < 22 ? randomPastDate(6) : null })) },
-                { id: 'enf-cirurgica', name: 'Enfermaria Cirúrgica', beds: Array(24).fill().map((_, i) => ({ id: i+1, status: i < 18 ? 'occupied' : i >= 23 ? 'blocked' : 'available', admissionDate: i < 18 ? randomPastDate(5) : null })) },
-                { id: 'pediatria', name: 'Pediatria', beds: Array(12).fill().map((_, i) => ({ id: i+1, status: i < 8 ? 'occupied' : 'available', admissionDate: i < 8 ? randomPastDate(4) : null })) },
-                { id: 'maternidade', name: 'Maternidade', beds: Array(15).fill().map((_, i) => ({ id: i+1, status: i < 10 ? 'occupied' : 'available', admissionDate: i < 10 ? randomPastDate(3) : null })) }
+                { id: 'uti-adulto', name: 'UTI Adulto', beds: Array(10).fill().map((_, i) => ({ id: i+1, status: i < 9 ? 'occupied' : 'available', admissionDate: i < 9 ? randomPastDate(7) : null, expectedDischarge: i < 9 ? generateExpectedDischarge(Math.floor(Math.random() * 3) + 1) : null })) },
+                { id: 'uti-ped', name: 'UTI Pediátrica', beds: Array(6).fill().map((_, i) => ({ id: i+1, status: i < 4 ? 'occupied' : 'available', admissionDate: i < 4 ? randomPastDate(5) : null, expectedDischarge: i < 4 ? generateExpectedDischarge(Math.floor(Math.random() * 3) + 1) : null })) },
+                { id: 'enf-clinica', name: 'Enfermaria Clínica', beds: Array(30).fill().map((_, i) => ({ id: i+1, status: i < 22 ? 'occupied' : i >= 28 ? 'blocked' : 'available', admissionDate: i < 22 ? randomPastDate(6) : null, expectedDischarge: i < 22 ? generateExpectedDischarge(Math.floor(Math.random() * 3) + 1) : null })) },
+                { id: 'enf-cirurgica', name: 'Enfermaria Cirúrgica', beds: Array(24).fill().map((_, i) => ({ id: i+1, status: i < 18 ? 'occupied' : i >= 23 ? 'blocked' : 'available', admissionDate: i < 18 ? randomPastDate(5) : null, expectedDischarge: i < 18 ? generateExpectedDischarge(Math.floor(Math.random() * 3) + 1) : null })) },
+                { id: 'pediatria', name: 'Pediatria', beds: Array(12).fill().map((_, i) => ({ id: i+1, status: i < 8 ? 'occupied' : 'available', admissionDate: i < 8 ? randomPastDate(4) : null, expectedDischarge: i < 8 ? generateExpectedDischarge(Math.floor(Math.random() * 2) + 1) : null })) },
+                { id: 'maternidade', name: 'Maternidade', beds: Array(15).fill().map((_, i) => ({ id: i+1, status: i < 10 ? 'occupied' : 'available', admissionDate: i < 10 ? randomPastDate(3) : null, expectedDischarge: i < 10 ? generateExpectedDischarge(Math.floor(Math.random() * 2) + 1) : null })) }
             ],
             movements: [],
             alerts: [],
@@ -567,12 +595,20 @@
 
             const occupancyRate = totalBeds > 0 ? (occupied / totalBeds) * 100 : 0;
             const avgStay = occupiedCount > 0 ? totalStayDays / occupiedCount : 0;
-            const dischargesToday = data.movements.filter(m => 
-                m.type === 'discharge' && 
-                new Date(m.timestamp).toDateString() === new Date().toDateString()
-            ).length;
+            // Count expected discharges in next 24h
+            let dischargesNext24h = 0;
+            data.sectors.forEach(sector => {
+                sector.beds.forEach(bed => {
+                    if (bed.status === 'occupied' && bed.expectedDischarge) {
+                        const hours = getHoursUntilDischarge(bed.expectedDischarge);
+                        if (hours !== null && hours >= 0 && hours <= 24) {
+                            dischargesNext24h++;
+                        }
+                    }
+                });
+            });
 
-            return { totalBeds, occupied, available, blocked, occupancyRate, avgStay, dischargesToday };
+            return { totalBeds, occupied, available, blocked, occupancyRate, avgStay, dischargesToday: dischargesNext24h };
         }
 
         function getSectorStats(sectorId) {
@@ -775,6 +811,48 @@
             `;
         }
 
+        function getDischargeAlerts(sectorId = null) {
+            const alerts = [];
+            const sectorsToCheck = sectorId ? [data.sectors.find(s => s.id === sectorId)] : data.sectors;
+            
+            sectorsToCheck.forEach(sector => {
+                if (!sector) return;
+                sector.beds.forEach(bed => {
+                    if (bed.status === 'occupied' && bed.expectedDischarge) {
+                        const hours = getHoursUntilDischarge(bed.expectedDischarge);
+                        if (hours !== null && hours >= 0 && hours <= 24) {
+                            alerts.push({
+                                sectorId: sector.id,
+                                sectorName: sector.name,
+                                bedId: bed.id,
+                                expectedDischarge: bed.expectedDischarge,
+                                hoursLeft: hours
+                            });
+                        }
+                    }
+                });
+            });
+            
+            return alerts.sort((a, b) => a.hoursLeft - b.hoursLeft);
+        }
+        
+        function renderDischargeAlerts(sectorId) {
+            const alerts = getDischargeAlerts(sectorId);
+            if (alerts.length === 0) return '';
+            
+            return `
+                <div class="discharge-alert">
+                    <div class="discharge-alert-title">⏰ Altas previstas nas próximas 24h</div>
+                    ${alerts.map(a => `
+                        <div class="discharge-alert-item">
+                            <span><strong>Leito ${a.bedId}</strong> — ${formatBrasiliaDateTime(a.expectedDischarge)}</span>
+                            <button class="btn btn-sm btn-warning" onclick="showEditDischargeModal('${a.sectorId}', ${a.bedId})">Ajustar</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
         function renderBedGrid(sectorId) {
             currentSectorId = sectorId;
             const sector = data.sectors.find(s => s.id === sectorId);
@@ -784,14 +862,28 @@
             renderSectorStats(sectorId);
 
             const container = document.getElementById('bedGrid');
-            container.innerHTML = sector.beds.map(bed => {
+            
+            // Add discharge alerts before grid
+            const alertsHtml = renderDischargeAlerts(sectorId);
+            
+            container.innerHTML = alertsHtml + sector.beds.map(bed => {
                 let daysText = '';
-                if (bed.status === 'occupied' && bed.admissionDate) {
-                    const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
-                    daysText = `<div class="bed-days">${days}d</div>`;
+                let dischargeSoonClass = '';
+                
+                if (bed.status === 'occupied') {
+                    if (bed.admissionDate) {
+                        const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
+                        daysText = `<div class="bed-days">${days}d</div>`;
+                    }
+                    if (bed.expectedDischarge) {
+                        const hours = getHoursUntilDischarge(bed.expectedDischarge);
+                        if (hours !== null && hours >= 0 && hours <= 24) {
+                            dischargeSoonClass = 'discharge-soon';
+                        }
+                    }
                 }
                 return `
-                    <div class="bed-item ${bed.status}" onclick="openBedModal('${sectorId}', ${bed.id})" data-bed="${bed.id}">
+                    <div class="bed-item ${bed.status} ${dischargeSoonClass}" onclick="openBedModal('${sectorId}', ${bed.id})" data-bed="${bed.id}">
                         <div class="bed-number">${bed.id}</div>
                         <div class="bed-status">${bed.status === 'occupied' ? 'Ocupado' : bed.status === 'available' ? 'Livre' : 'Bloqueado'}</div>
                         ${daysText}
@@ -893,9 +985,18 @@
 
             let content = `<p style="margin-bottom: 1rem;">Status atual: <strong>${bed.status === 'occupied' ? 'Ocupado' : bed.status === 'available' ? 'Disponível' : 'Bloqueado'}</strong></p>`;
 
-            if (bed.status === 'occupied' && bed.admissionDate) {
-                const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
-                content += `<p style="margin-bottom: 1rem;">Dias de internação: <strong>${days}</strong></p>`;
+            if (bed.status === 'occupied') {
+                if (bed.admissionDate) {
+                    const days = Math.ceil((new Date() - new Date(bed.admissionDate)) / (1000 * 60 * 60 * 24));
+                    content += `<p style="margin-bottom: 0.5rem;">Dias de internação: <strong>${days}</strong></p>`;
+                }
+                if (bed.expectedDischarge) {
+                    const hours = getHoursUntilDischarge(bed.expectedDischarge);
+                    const isNear = hours !== null && hours >= 0 && hours <= 24;
+                    content += `<p style="margin-bottom: 1rem;">Previsão de alta: <strong style="${isNear ? 'color: var(--warning);' : ''}">${formatBrasiliaDateTime(bed.expectedDischarge)}</strong>${isNear ? ' ⏰' : ''}</p>`;
+                } else {
+                    content += `<p style="margin-bottom: 1rem; color: var(--text-secondary);">Previsão de alta: <em>não definida</em></p>`;
+                }
             }
 
             document.getElementById('modalContent').innerHTML = content;
@@ -904,10 +1005,11 @@
             if (bed.status === 'occupied') {
                 actions = `
                     <button class="btn btn-primary btn-block" onclick="changeBedStatus('${sectorId}', ${bedId}, 'discharge')">↑ Registrar Alta</button>
+                    <button class="btn btn-warning btn-block" onclick="showEditDischargeModal('${sectorId}', ${bedId})">📅 Ajustar Previsão</button>
                 `;
             } else if (bed.status === 'available') {
                 actions = `
-                    <button class="btn btn-success btn-block" onclick="changeBedStatus('${sectorId}', ${bedId}, 'admission')">+ Nova Admissão</button>
+                    <button class="btn btn-success btn-block" onclick="showAdmissionModalForBed('${sectorId}', ${bedId})">+ Nova Admissão</button>
                     <button class="btn btn-warning btn-block" onclick="changeBedStatus('${sectorId}', ${bedId}, 'block')">🔒 Bloquear</button>
                 `;
             } else {
@@ -936,16 +1038,23 @@
             if (action === 'admission') {
                 bed.status = 'occupied';
                 bed.admissionDate = new Date().toISOString();
+                // Default: alta em 3 dias às 10h
+                const defaultDischarge = new Date();
+                defaultDischarge.setDate(defaultDischarge.getDate() + 3);
+                defaultDischarge.setHours(10, 0, 0, 0);
+                bed.expectedDischarge = defaultDischarge.toISOString();
                 movement.type = 'admission';
                 showToast('Admissão registrada com sucesso!');
             } else if (action === 'discharge') {
                 bed.status = 'available';
                 bed.admissionDate = null;
+                bed.expectedDischarge = null;
                 movement.type = 'discharge';
                 showToast('Alta registrada com sucesso!');
             } else if (action === 'block') {
                 bed.status = 'blocked';
                 bed.admissionDate = null;
+                bed.expectedDischarge = null;
                 movement.type = 'block';
                 showToast('Leito bloqueado!');
             } else if (action === 'unblock') {
@@ -982,6 +1091,16 @@
             }, 100);
         }
 
+        function getDefaultDischargeDateTime() {
+            const d = new Date();
+            d.setDate(d.getDate() + 3);
+            d.setHours(10, 0, 0, 0);
+            // Format for datetime-local input
+            const offset = d.getTimezoneOffset();
+            const local = new Date(d.getTime() - offset * 60 * 1000);
+            return local.toISOString().slice(0, 16);
+        }
+        
         function showAdmissionModal() {
             const sector = data.sectors.find(s => s.id === currentSectorId);
             const availableBeds = sector.beds.filter(b => b.status === 'available');
@@ -999,6 +1118,11 @@
                         ${availableBeds.map(b => `<option value="${b.id}">Leito ${b.id}</option>`).join('')}
                     </select>
                 </div>
+                <div class="form-group">
+                    <label class="form-label">Previsão de alta (Horário de Brasília):</label>
+                    <input type="datetime-local" class="form-input" id="admissionExpectedDischarge" value="${getDefaultDischargeDateTime()}">
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary);">⏰ Baseie a previsão na meta terapêutica do paciente</p>
             `;
             document.getElementById('modalActions').innerHTML = `
                 <button class="btn btn-success" onclick="confirmAdmission()">Confirmar Admissão</button>
@@ -1006,10 +1130,116 @@
             `;
             document.getElementById('modalOverlay').classList.add('active');
         }
+        
+        function showAdmissionModalForBed(sectorId, bedId) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            
+            document.getElementById('modalTitle').textContent = `Nova Admissão - ${sector.name} - Leito ${bedId}`;
+            document.getElementById('modalContent').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Previsão de alta (Horário de Brasília):</label>
+                    <input type="datetime-local" class="form-input" id="admissionExpectedDischarge" value="${getDefaultDischargeDateTime()}">
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary);">⏰ Baseie a previsão na meta terapêutica do paciente</p>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-success" onclick="confirmAdmissionForBed('${sectorId}', ${bedId})">Confirmar Admissão</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+        
+        function confirmAdmissionForBed(sectorId, bedId) {
+            const expectedDischarge = document.getElementById('admissionExpectedDischarge').value;
+            
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const bed = sector.beds.find(b => b.id === bedId);
+            
+            bed.status = 'occupied';
+            bed.admissionDate = new Date().toISOString();
+            bed.expectedDischarge = expectedDischarge ? new Date(expectedDischarge).toISOString() : null;
+            
+            data.movements.push({
+                timestamp: new Date().toISOString(),
+                sectorId,
+                sectorName: sector.name,
+                bedId,
+                type: 'admission'
+            });
+            
+            saveData();
+            closeModal();
+            refreshAll();
+            showToast('Admissão registrada com sucesso!');
+        }
 
         function confirmAdmission() {
             const bedId = parseInt(document.getElementById('admissionBedSelect').value);
-            changeBedStatus(currentSectorId, bedId, 'admission');
+            const expectedDischarge = document.getElementById('admissionExpectedDischarge').value;
+            
+            const sector = data.sectors.find(s => s.id === currentSectorId);
+            const bed = sector.beds.find(b => b.id === bedId);
+            
+            bed.status = 'occupied';
+            bed.admissionDate = new Date().toISOString();
+            bed.expectedDischarge = expectedDischarge ? new Date(expectedDischarge).toISOString() : null;
+            
+            data.movements.push({
+                timestamp: new Date().toISOString(),
+                sectorId: currentSectorId,
+                sectorName: sector.name,
+                bedId,
+                type: 'admission'
+            });
+            
+            saveData();
+            closeModal();
+            refreshAll();
+            showToast('Admissão registrada com sucesso!');
+        }
+        
+        function showEditDischargeModal(sectorId, bedId) {
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const bed = sector.beds.find(b => b.id === bedId);
+            
+            let currentValue = '';
+            if (bed.expectedDischarge) {
+                const d = new Date(bed.expectedDischarge);
+                const offset = d.getTimezoneOffset();
+                const local = new Date(d.getTime() - offset * 60 * 1000);
+                currentValue = local.toISOString().slice(0, 16);
+            } else {
+                currentValue = getDefaultDischargeDateTime();
+            }
+            
+            document.getElementById('modalTitle').textContent = `Ajustar Previsão de Alta - Leito ${bedId}`;
+            document.getElementById('modalContent').innerHTML = `
+                <p style="margin-bottom: 1rem; color: var(--text-secondary);">Setor: ${sector.name}</p>
+                <div class="form-group">
+                    <label class="form-label">Nova previsão de alta (Horário de Brasília):</label>
+                    <input type="datetime-local" class="form-input" id="editExpectedDischarge" value="${currentValue}">
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary);">⏰ Ajuste baseado na evolução do paciente e metas terapêuticas</p>
+            `;
+            document.getElementById('modalActions').innerHTML = `
+                <button class="btn btn-primary" onclick="confirmEditDischarge('${sectorId}', ${bedId})">Salvar</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+        
+        function confirmEditDischarge(sectorId, bedId) {
+            const newDischarge = document.getElementById('editExpectedDischarge').value;
+            
+            const sector = data.sectors.find(s => s.id === sectorId);
+            const bed = sector.beds.find(b => b.id === bedId);
+            
+            bed.expectedDischarge = newDischarge ? new Date(newDischarge).toISOString() : null;
+            
+            saveData();
+            closeModal();
+            refreshAll();
+            showToast('Previsão de alta atualizada!');
         }
 
         function showDischargeModal() {
